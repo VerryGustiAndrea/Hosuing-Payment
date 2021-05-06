@@ -1,4 +1,4 @@
-const response = (data: any, message = '', status: number, meta: any = {}) => {
+const response = (data: any, message = '', status: boolean, meta: any = {}) => {
 
   if (data === null) {
     data = null;
@@ -14,6 +14,6 @@ const response = (data: any, message = '', status: number, meta: any = {}) => {
     }
   }
 
-  return { data, message, meta, statusCode: status };
+  return { status, message, data, meta, };
 };
 export default response;

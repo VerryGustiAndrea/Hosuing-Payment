@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Menu } from './menu/menu.model';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { MenuModule } from './menu/menu.module';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
+import { InboxModule } from './inbox/inbox.module';
+import { TagihanModule } from './tagihan/tagihan.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -17,10 +18,9 @@ import { ConfigModule } from '@nestjs/config';
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
-    // models: [Menu],
     autoLoadModels: true,
     synchronize: true,
-  }), MenuModule
+  }), UserModule, InboxModule, TagihanModule
   ],
   controllers: [AppController],
   providers: [AppService],

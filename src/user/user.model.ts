@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 
 @Table
-export class Menu extends Model {
+export class User extends Model {
   // @ApiProperty()
   @AutoIncrement
   @PrimaryKey
@@ -29,36 +29,16 @@ export class Menu extends Model {
   // @ApiProperty()
   @Column
   // ({ type: DataType.BIGINT })
-  m_category_menu: number;
+  no_kontrak: string;
 
   // @ApiProperty()
   @Column
   // ({ type: DataType.BIGINT })
-  price: number;
+  password: string;
 
   // @ApiProperty()
   @Column
   // ({ type: DataType.BIGINT })
-  stock: number;
-
-  // @ApiProperty()
-  @Column
-  // ({ type: DataType.TEXT })
-  image: string;
-
-  // @ApiProperty()
-  @Column
-  // ({ type: DataType.STRING })
-  menu_details: string;
-
-  // @ApiProperty()
-  @Column
-  // ({ type: DataType.BIGINT })
-  discount: number;
-
-  // @ApiProperty()
-  @Column
-  // ({ type: DataType.BIGINT })
-  recomend: number;
+  role: string;
 
 }
