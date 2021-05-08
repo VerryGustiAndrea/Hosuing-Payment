@@ -14,7 +14,7 @@ export class UserController {
     if (response.length) {
       return Response(response, 'Data ditemukan', true);
     } else {
-      return Response(response, 'Data tidak ditemukan', true);
+      return Response(response, 'Data tidak ditemukan', false);
     }
   }
 
