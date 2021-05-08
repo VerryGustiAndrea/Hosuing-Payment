@@ -5,6 +5,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Response, ErrorResponse, ErrorResponseCustom } from '../library';
 
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
@@ -24,25 +27,24 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  @Post('register')
+  async register(@Body() createUserDto: CreateUserDto) {
+    try {
+      const response = await this.userService.register(createUserDto);
+      return Response(response, 'Success Add User', true);
+    } catch (error) {
+      return ErrorResponse(error, 500, null)
+    }
+  }
+
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     try {
       const response = await this.userService.login(loginUserDto);
-      // console.log(response)
       return Response(response, 'Data ditemukan', true);
     } catch (error) {
-      console.log(error)
-      // return Response(null, 'No Kontrak atau Password salah ', false);
       return ErrorResponseCustom('No Kontrak atau Password salah ', false, null)
     }
-    // if (response.length) {
-    //   return Response(response, 'Data ditemukan', true);
-    // } else {
-    //   return Response(response, 'Data tidak ditemukan', false);
-    // }
-    // if (response == Error) {
-    //   return Response(response, 'Data tidak ditemukan', false);
-    // }
   }
 
   @Post()
