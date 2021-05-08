@@ -1,15 +1,14 @@
 import { HttpStatus, HttpException } from '@nestjs/common';
 
-const ErrorResponse = (
+const ErrorResponseCustom = (
   message: any,
-  status: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+  status: boolean,
   data: any
 ) => {
   if (message.message) {
     message = message.message;
   }
 
-  return { message, status, data }
-
+  return { status, message, data }
 };
-export default ErrorResponse;
+export default ErrorResponseCustom;
