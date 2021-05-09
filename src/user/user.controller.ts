@@ -48,7 +48,7 @@ export class UserController {
       const response = await this.userService.login(loginUserDto);
       return Response(response, 'Data ditemukan', true);
     } catch (error) {
-      return ErrorResponseCustom('No Kontrak atau Password salah ', false, null)
+      return ErrorResponseCustom('Username atau Password salah ', false, null)
     }
   }
 
