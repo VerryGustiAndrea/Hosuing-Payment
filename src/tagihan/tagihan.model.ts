@@ -18,62 +18,62 @@ export class Tagihan extends Model {
   @AutoIncrement
   @PrimaryKey
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   id: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.STRING })
+    ({ type: DataType.STRING })
   user_id: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   stan_meter_awal: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   stan_meter_akhir: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   penggunaan: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   tagihan_air: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   sampah: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   keamanan: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   admin: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   sub_total_tagihan: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   denda: number;
 
   // @ApiProperty()
   @Column
-  // ({ type: DataType.BIGINT })
+    ({ type: DataType.BIGINT })
   grand_total: number;
 
   // @ApiProperty()
