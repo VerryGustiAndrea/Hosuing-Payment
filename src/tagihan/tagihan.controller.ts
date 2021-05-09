@@ -1,9 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, UploadedFile, UploadedFiles, } from '@nestjs/common';
 import { TagihanService } from './tagihan.service';
-import { CreateTagihanDto } from './dto/create-tagihan.dto';
+import { CreateTagihanDto, CreateTagihanImage } from './dto/create-tagihan.dto';
 import { UpdateTagihanDto } from './dto/update-tagihan.dto';
 import { Response, ErrorResponse } from '../library';
 import { DateOnlyDataType } from 'sequelize/types';
+
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
+
+
 
 @Controller('tagihan')
 export class TagihanController {
@@ -77,6 +84,24 @@ export class TagihanController {
       return Response(response, 'Data tidak ditemukan', false);
     }
   }
+
+  @Post('uploadfbuktitransfer/:id_tagihan')
+  @UseInterceptors(FileInterceptor('foto'))
+  async uploadfbuktitransfer(
+    @UploadedFile() file: CreateTagihanImage,
+    @Param('id_tagihan') id_tagihan: string
+  ) {
+    if (!file) {
+      return ErrorResponse('Error Image not found', 500, null);
+    }
+    const response = await this.tagihanService.uploadfbuktitransfer(file, id_tagihan);
+    if (response === false) {
+      return ErrorResponse('Error Insert Data', 500, null);
+    } else {
+      return Response(response, 'Success input bukti transfer', true);
+    }
+  }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {

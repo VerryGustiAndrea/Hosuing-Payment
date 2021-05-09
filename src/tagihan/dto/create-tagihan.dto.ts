@@ -14,6 +14,7 @@ import {
     MinLength,
     MaxLength,
     isAlphanumeric,
+
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -83,9 +84,17 @@ export class CreateTagihanDto {
     // status: number;
 
     // @IsNotEmpty()
-    // foto: string;
+    @IsOptional()
+    foto: string;
 }
 
-//  class CreateMenuImage {
-//     file: Images[];
-// }
+
+
+
+export class CreateTagihanImage {
+    fieldname: string;
+    originalname: string;
+    encoding: string;
+    mimetype: string;
+    buffer: Buffer;
+}
