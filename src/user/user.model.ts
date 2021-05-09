@@ -29,7 +29,7 @@ export class User extends Model {
   // @ApiProperty()
   @Column
   // ({ type: DataType.BIGINT })
-  no_kontrak: string;
+  username: string;
 
   // @ApiProperty()
   @Column

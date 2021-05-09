@@ -25,7 +25,7 @@ export class LoginUserDto {
     @IsNotEmpty()
     // @MinLength(5)
     // @IsAlphanumeric()
-    no_kontrak: string;
+    username: string;
 
     @IsNotEmpty()
     // @MinLength(5)

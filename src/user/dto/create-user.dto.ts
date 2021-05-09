@@ -14,6 +14,7 @@ import {
     MinLength,
     MaxLength,
     isAlphanumeric,
+    IsUUID
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -27,7 +28,7 @@ export class CreateUserDto {
     // @MinLength(5)
     // @IsOptional()
     // @IsAlphanumeric()
-    no_kontrak?: string;
+    username?: string;
 
     @IsNotEmpty()
     // @IsOptional()

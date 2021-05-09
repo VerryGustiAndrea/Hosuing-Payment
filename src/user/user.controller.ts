@@ -30,8 +30,13 @@ export class UserController {
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     try {
-      const response = await this.userService.register(createUserDto);
-      return Response(response, 'Success Add User', true);
+      const check = await this.userService.checkUsers(createUserDto);
+      if (check) {
+        return ErrorResponseCustom('Username tidak tersedia', false, null)
+      } else {
+        const response = await this.userService.register(createUserDto);
+        return Response(response, 'Success Add User', true);
+      }
     } catch (error) {
       return ErrorResponse(error, 500, null)
     }

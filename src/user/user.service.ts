@@ -24,6 +24,10 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
+  async checkUsers(createUserDto: CreateUserDto) {
+    return this.userModel.findOne({ where: { username: createUserDto.username } });
+  }
+
 
   async register(createUserDto: CreateUserDto) {
     // //Hashing Password
@@ -33,7 +37,7 @@ export class UserService {
 
     const createdUser = new this.userModel({
       name: createUserDto.name,
-      no_kontrak: createUserDto.no_kontrak,
+      username: createUserDto.username,
       password: hash,
       role: createUserDto.role
     })
@@ -46,7 +50,7 @@ export class UserService {
   }
 
   async login(loginUserDto: LoginUserDto): Promise<any> {
-    const response = await this.userModel.findOne({ where: { no_kontrak: loginUserDto.no_kontrak } });
+    const response = await this.userModel.findOne({ where: { username: loginUserDto.username } });
     if (!response) {
       throw new Error("Username not found");
     } else {
