@@ -38,6 +38,17 @@ export class TagihanController {
     }
   }
 
+  @Post('inputtagihan')
+  async inputtagihan(@Body() createTagihanDto: CreateTagihanDto) {
+    console.log(createTagihanDto)
+    try {
+      const response = await this.tagihanService.inputtagihan(createTagihanDto);
+      return Response(response, 'Success Input Tagihan', true);
+    } catch (error) {
+      return ErrorResponse(error, 500, null)
+    }
+  }
+
   //WARGA
   @Get('gettagihanwarga')
   async gettagihan(@Query('date') date: string, @Query('user_id') user_id: number) {

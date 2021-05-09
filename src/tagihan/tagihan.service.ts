@@ -6,6 +6,7 @@ import { Tagihan } from './tagihan.model';
 const { Op } = require("sequelize");
 
 
+
 @Injectable()
 export class TagihanService {
   constructor(
@@ -39,6 +40,32 @@ export class TagihanService {
       }
     });
   }
+
+  async inputtagihan(createTagihanDto: CreateTagihanDto) {
+    const createdTagihan = new this.tagihanModel({
+      user_id: createTagihanDto.user_id,
+      stan_meter_awal: createTagihanDto.stan_meter_awal,
+      stan_meter_akhir: createTagihanDto.stan_meter_akhir,
+      penggunaan: createTagihanDto.penggunaan,
+      tagihan_air: createTagihanDto.tagihan_air,
+      sampah: createTagihanDto.sampah,
+      keamanan: createTagihanDto.keamanan,
+      admin: createTagihanDto.admin,
+      sub_total_tagihan: createTagihanDto.sub_total_tagihan,
+      denda: createTagihanDto.denda,
+      grand_total: createTagihanDto.grand_total,
+      date: new Date(),
+      status: 0,
+    })
+    console.log(createdTagihan)
+    try {
+      await createdTagihan.save()
+      return createdTagihan
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   //WARGA
   GetTagihanWarga(date: string, user_id: number): Promise<Tagihan[]> {
     const date1 = new Date(date) //date
