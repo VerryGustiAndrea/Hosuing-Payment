@@ -121,13 +121,13 @@ export class TagihanService {
       grand_total: response[0].grand_total,
       date: response[0].date,
       status: 1,
-      foto: process.env.PATH_IMAGE + file.originalname,
+      foto: process.env.PATH_IMAGE + file.originalname.replace(new RegExp(" ", "g"), "-"),
 
     }
     console.log(updatedTagihan)
 
     const data = {
-      foto: process.env.PATH_IMAGE + file.originalname,
+      foto: process.env.PATH_IMAGE + file.originalname.replace(new RegExp(" ", "g"), "-"),
       status: 1
     }
 
