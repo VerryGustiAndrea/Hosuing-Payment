@@ -9,29 +9,63 @@ import { DateOnlyDataType } from 'sequelize/types';
 export class TagihanController {
   constructor(private readonly tagihanService: TagihanService) { }
 
-
-  @Get()
-  findAll() {
-    return this.tagihanService.findAll();
-  }
-
+  //ADMIN
   @Get('getlisttagihan')
   async getlisttagihan(@Query('date') date: string) {
-    // const month = Number(date.slice(5 - 7))
-    // console.log(new Date(date))
-    // console.log(Number(date.slice(5 - 7)))
-    // console.log(new Date(date).getFullYear())
-    // console.log(new Date(date).getMonth())
-    // console.log(new Date(date).getDay())
     const response = await this.tagihanService.GetListTagihan(date);
     if (response.length) {
-      return Response(response, 'Data ditemukan', true);
+      if (response.length == 1) {
+        return Response(response[0], 'Data ditemukan', true);
+      } else {
+        return Response(response, 'Data ditemukan', true);
+      }
     } else {
       return Response(response, 'Data tidak ditemukan', false);
     }
   }
 
+  @Get('getlisthistory')
+  async getlisthistory(@Query('date') date: string,) {
+    const response = await this.tagihanService.getlisthistory(date);
+    if (response.length) {
+      if (response.length == 1) {
+        return Response(response[0], 'Data ditemukan', true);
+      } else {
+        return Response(response, 'Data ditemukan', true);
+      }
+    } else {
+      return Response(response, 'Data tidak ditemukan', false);
+    }
+  }
 
+  //WARGA
+  @Get('gettagihanwarga')
+  async gettagihan(@Query('date') date: string, @Query('user_id') user_id: number) {
+    const response = await this.tagihanService.GetTagihanWarga(date, user_id);
+    if (response.length) {
+      if (response.length == 1) {
+        return Response(response[0], 'Data ditemukan', true);
+      } else {
+        return Response(response, 'Data ditemukan', true);
+      }
+    } else {
+      return Response(response, 'Data tidak ditemukan', false);
+    }
+  }
+
+  @Get('gethistorywarga')
+  async gethistorywarga(@Query('date') date: string, @Query('user_id') user_id: number) {
+    const response = await this.tagihanService.gethistorywarga(date, user_id);
+    if (response.length) {
+      if (response.length == 1) {
+        return Response(response[0], 'Data ditemukan', true);
+      } else {
+        return Response(response, 'Data ditemukan', true);
+      }
+    } else {
+      return Response(response, 'Data tidak ditemukan', false);
+    }
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

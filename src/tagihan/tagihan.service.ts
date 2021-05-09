@@ -13,10 +13,7 @@ export class TagihanService {
     private tagihanModel: typeof Tagihan,
   ) { }
 
-  findAll() {
-    return `This action returns all tagihan`;
-  }
-  // WHERE MONTH(happened_at) = 1 AND YEAR(happened_at) = 2009
+  //ADMIN
   GetListTagihan(date: string): Promise<Tagihan[]> {
     const date1 = new Date(date) //date
     const date2 = new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)) //date + 1 month
@@ -29,6 +26,47 @@ export class TagihanService {
     });
   }
 
+  getlisthistory(date: string): Promise<Tagihan[]> {
+    const date1 = new Date(date) //date
+    const date2 = new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)) //date + 1 month
+    return this.tagihanModel.findAll({
+      where: {
+        [Op.and]: [{
+          date: {
+            [Op.between]: [date1, date2],
+          }
+        }, { [Op.or]: [{ status: 1 }, { status: 2 }], }]
+      }
+    });
+  }
+  //WARGA
+  GetTagihanWarga(date: string, user_id: number): Promise<Tagihan[]> {
+    const date1 = new Date(date) //date
+    const date2 = new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)) //date + 1 month
+    return this.tagihanModel.findAll({
+      where: {
+        [Op.and]: [{
+          date: {
+            [Op.between]: [date1, date2],
+          }
+        }, { user_id: user_id }, { status: 0 }]
+      }
+    });
+  }
+
+  gethistorywarga(date: string, user_id: number): Promise<Tagihan[]> {
+    const date1 = new Date(date) //date
+    const date2 = new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)) //date + 1 month
+    return this.tagihanModel.findAll({
+      where: {
+        [Op.and]: [{
+          date: {
+            [Op.between]: [date1, date2],
+          }
+        }, { user_id: user_id }, { [Op.or]: [{ status: 1 }, { status: 2 }], }]
+      }
+    });
+  }
 
   findOne(id: number) {
     return `This action returns a #${id} tagihan`;
