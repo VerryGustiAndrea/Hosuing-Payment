@@ -124,7 +124,7 @@ export class TagihanService {
       foto: process.env.PATH_IMAGE + file.originalname.replace(new RegExp(" ", "g"), "-"),
 
     }
-    console.log(updatedTagihan)
+    // console.log(updatedTagihan)
 
     const data = {
       foto: process.env.PATH_IMAGE + file.originalname.replace(new RegExp(" ", "g"), "-"),
@@ -142,7 +142,7 @@ export class TagihanService {
         }
         console.log("The file was saved!");
       });
-      return response
+      return updatedTagihan
     } catch (error) {
       console.log(error)
       return false
