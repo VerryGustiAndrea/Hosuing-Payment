@@ -135,7 +135,7 @@ export class TagihanService {
 
     try {
       const execute = await this.tagihanModel.update(data, { where: { id: id_tagihan } });
-      const imagePath = `images/buktiTransfer/${file.originalname}`;
+      const imagePath = `images/buktiTransfer/${file.originalname.replace(new RegExp(" ", "g"), "-")}`;
       fs.writeFile("./src/" + imagePath, file.buffer, function (err) {
         if (err) {
           return console.log(err);
