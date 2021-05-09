@@ -121,13 +121,13 @@ export class TagihanService {
       grand_total: response[0].grand_total,
       date: response[0].date,
       status: 1,
-      foto: process.env.PATH_IMAGE + file.originalname.replace(new RegExp(" ", "g"), "-"),
+      foto: process.env.PATH_IMAGE + new Date().valueOf() + file.originalname.replace(new RegExp(" ", "g"), "-"),
 
     }
     // console.log(updatedTagihan)
 
     const data = {
-      foto: process.env.PATH_IMAGE + file.originalname.replace(new RegExp(" ", "g"), "-"),
+      foto: process.env.PATH_IMAGE + new Date().valueOf() + file.originalname.replace(new RegExp(" ", "g"), "-"),
       status: 1
     }
 
@@ -135,7 +135,7 @@ export class TagihanService {
 
     try {
       const execute = await this.tagihanModel.update(data, { where: { id: id_tagihan } });
-      const imagePath = `images/buktiTransfer/${file.originalname.replace(new RegExp(" ", "g"), "-")}`;
+      const imagePath = `images/buktiTransfer/${new Date().valueOf()}${file.originalname.replace(new RegExp(" ", "g"), "-")}`;
       fs.writeFile("./src/" + imagePath, file.buffer, function (err) {
         if (err) {
           return console.log(err);
