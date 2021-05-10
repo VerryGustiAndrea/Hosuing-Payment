@@ -1,8 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, UploadedFile, UploadedFiles, } from '@nestjs/common';
 import { TagihanService } from './tagihan.service';
+import { InboxService } from '../inbox/inbox.service';
 import { CreateTagihanDto, CreateTagihanImage } from './dto/create-tagihan.dto';
 import { UpdateTagihanDto } from './dto/update-tagihan.dto';
-import { Response, ErrorResponse } from '../library';
+import { ApprovalTagihanDto } from './dto/approval-tagihan.dto';
+import { Response, ErrorResponse, ErrorResponseCustom } from '../library';
 import { DateOnlyDataType } from 'sequelize/types';
 
 import {
@@ -14,7 +16,8 @@ import {
 
 @Controller('tagihan')
 export class TagihanController {
-  constructor(private readonly tagihanService: TagihanService) { }
+  constructor(private readonly tagihanService: TagihanService,
+    private inboxService: InboxService) { }
 
   //ADMIN
   @Get('getlisttagihan')
@@ -53,6 +56,39 @@ export class TagihanController {
       return Response(response, 'Success Input Tagihan', true);
     } catch (error) {
       return ErrorResponse(error, 500, null)
+    }
+  }
+
+  @Post('approval')
+  async approval(@Body() approvalTagihanDto: ApprovalTagihanDto) {
+
+    try {
+      let response = await this.tagihanService.approval(approvalTagihanDto);
+      if (response.status == 1) {
+        //respon error gagal update
+        return ErrorResponseCustom("Status gagal di update", false, null)
+      } else if (response.status == 0 || response.status == 2) {
+        const dataInbox = {
+          user_id: approvalTagihanDto.user_id,
+          title: response.message,
+          message: "",
+          date: ""
+        }
+        if (response.status == 2) {
+          dataInbox.message = `Pembayaran anda pada ${new Date().toDateString()} berhasil di terima. Terimkasih atas pembayaran anda.`
+        } else if (response.status == 0) {
+          dataInbox.message = `Pembayaran anda pada ${new Date().toDateString()} ditolak, dikarenakan bukti transfer tidak sesuai atau tidak valid, mohon upload dan konfirmasi kembali kepada admin. Terimakasih.`
+        }
+        //add notification
+        await this.inboxService.inputinbox(dataInbox);
+        //respon success update
+        return Response(null, "Status berhasil di update", true);
+      } else {
+        //respon kadarluarsa
+        return ErrorResponseCustom(response.message, false, null)
+      }
+    } catch (error) {
+      return ErrorResponseCustom("Status gagal di update", false, null)
     }
   }
 

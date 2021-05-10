@@ -18,22 +18,22 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CreateInboxDto {
+export class ApprovalTagihanDto {
+
+    @IsNotEmpty()
+    @Type(() => Number)
+    @IsNumber()
+    tagihan_id: number;
+
+    @IsNotEmpty()
+    @Type(() => Number)
+    @IsNumber()
+    status: number;
 
     @IsNotEmpty()
     @Type(() => Number)
     @IsNumber()
     user_id: number;
 
-    @IsNotEmpty()
-    title: string;
-
-    @IsNotEmpty()
-    message: string;
-
-    @IsNotEmpty()
-    date: string;
-
 }
-
 

@@ -9,7 +9,7 @@ import { Inbox } from './inbox.model';
 export class InboxService {
   constructor(
     @InjectModel(Inbox)
-    private inboxModel: typeof Inbox,
+    public inboxModel: typeof Inbox,
   ) { }
 
   findAll() {
@@ -22,6 +22,21 @@ export class InboxService {
 
   create(createInboxDto: CreateInboxDto) {
     return 'This action adds a new inbox';
+  }
+
+  async inputinbox(createInboxDto: CreateInboxDto) {
+    const createdInbox = new this.inboxModel({
+      user_id: createInboxDto.user_id,
+      title: createInboxDto.title,
+      message: createInboxDto.message,
+      date: new Date()
+    })
+    try {
+      await createdInbox.save()
+      return createdInbox
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   update(id: number, updateInboxDto: UpdateInboxDto) {

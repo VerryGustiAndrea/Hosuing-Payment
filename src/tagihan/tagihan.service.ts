@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTagihanDto, CreateTagihanImage } from './dto/create-tagihan.dto';
 import { UpdateTagihanDto } from './dto/update-tagihan.dto';
+import { ApprovalTagihanDto } from './dto/approval-tagihan.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Tagihan } from './tagihan.model';
 import response from 'src/library/response';
@@ -59,12 +60,37 @@ export class TagihanService {
       date: new Date(),
       status: 0,
     })
-    console.log(createdTagihan)
     try {
       await createdTagihan.save()
       return createdTagihan
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  async approval(approvalTagihanDto: ApprovalTagihanDto) {
+
+    const data = {
+      id: approvalTagihanDto.tagihan_id,
+      status: approvalTagihanDto.status
+    }
+    //check tagihan
+    const check = await this.tagihanModel.findAll({ where: { id: approvalTagihanDto.tagihan_id } })
+    //return respon kadarluarsa (tagihan tidak dieksekusi)
+    if (check[0].status == 0 || check[0].status == 2) {
+      return { status: 3, message: "Tagihan Kadarluarsa" }
+    }
+
+    //update tagihan
+    const response = await this.tagihanModel.update(data, { where: { id: approvalTagihanDto.tagihan_id } });
+    if (response[0] == 1) {
+      if (approvalTagihanDto.status == 2) {
+        return { status: 2, message: "Pembayaran sukses!" }
+      } else {
+        return { status: 0, message: "Pembayaran ditolak!" }
+      }
+    } else {
+      return { status: 1, message: "Status gagal di update" }
     }
   }
 
@@ -122,16 +148,12 @@ export class TagihanService {
       date: response[0].date,
       status: 1,
       foto: process.env.PATH_IMAGE + new Date().valueOf() + file.originalname.replace(new RegExp(" ", "g"), "-"),
-
     }
-    // console.log(updatedTagihan)
 
     const data = {
       foto: process.env.PATH_IMAGE + new Date().valueOf() + file.originalname.replace(new RegExp(" ", "g"), "-"),
       status: 1
     }
-
-    console.log(response[0].user_id)
 
     try {
       const execute = await this.tagihanModel.update(data, { where: { id: id_tagihan } });
@@ -149,21 +171,6 @@ export class TagihanService {
     }
 
 
-    // const updatedTagihan = new this.tagihanModel({
-    //   id: Number(updateTagihanDto.tagihan_id),
-    //   status: 1,
-    //   foto: file.originalname,
-    // })
-
-    // console.log(updatedTagihan)
-
-    // try {
-    //   const execute = await this.tagihanModel.update(updatedTagihan, { where: { id: updateTagihanDto.tagihan_id } });
-    //   console.log(execute)
-    //   // return updatedMenu
-    // } catch (error) {
-    //   return false
-    // }
 
   }
 
