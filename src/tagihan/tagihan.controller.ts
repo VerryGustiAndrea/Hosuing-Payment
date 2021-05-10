@@ -84,8 +84,8 @@ export class TagihanController {
         //respon success update
         return Response(null, "Status berhasil di update", true);
       } else {
-        //respon kadarluarsa
-        return ErrorResponseCustom(response.message, false, null)
+        //respon error gagal update
+        return { status: 1, message: "Status gagal di update" }
       }
     } catch (error) {
       return ErrorResponseCustom("Status gagal di update", false, null)

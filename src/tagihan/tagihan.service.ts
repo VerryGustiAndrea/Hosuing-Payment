@@ -78,7 +78,7 @@ export class TagihanService {
     const check = await this.tagihanModel.findAll({ where: { id: approvalTagihanDto.tagihan_id } })
     //return respon kadarluarsa (tagihan tidak dieksekusi)
     if (check[0].status == 0 || check[0].status == 2) {
-      return { status: 3, message: "Tagihan Kadarluarsa" }
+      return { status: 1, message: "Status gagal di update" }
     }
 
     //update tagihan
