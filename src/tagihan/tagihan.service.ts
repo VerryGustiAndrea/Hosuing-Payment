@@ -69,7 +69,6 @@ export class TagihanService {
   }
 
   async approval(approvalTagihanDto: ApprovalTagihanDto) {
-
     const data = {
       id: approvalTagihanDto.tagihan_id,
       status: approvalTagihanDto.status

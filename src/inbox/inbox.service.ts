@@ -4,6 +4,7 @@ import { UpdateInboxDto } from './dto/update-inbox.dto';
 
 import { InjectModel } from '@nestjs/sequelize';
 import { Inbox } from './inbox.model';
+const { Op } = require("sequelize");
 
 @Injectable()
 export class InboxService {
@@ -11,6 +12,20 @@ export class InboxService {
     @InjectModel(Inbox)
     public inboxModel: typeof Inbox,
   ) { }
+
+  getinboxuser(date: string, user_id: number) {
+    const date1 = new Date(date) //date
+    const date2 = new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)) //date + 1 month
+    return this.inboxModel.findAll({
+      where: {
+        [Op.and]: [{
+          date: {
+            [Op.between]: [date1, date2],
+          }
+        }, { user_id: user_id }]
+      }
+    });
+  }
 
   findAll() {
     return `This action returns all inbox`;
