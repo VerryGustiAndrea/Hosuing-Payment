@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateTagihanDto, CreateTagihanImage } from './dto/create-tagihan.dto';
 import { UpdateTagihanDto } from './dto/update-tagihan.dto';
 import { ApprovalTagihanDto } from './dto/approval-tagihan.dto';
+import { CheckoutTagihanDto } from './dto/checkout-tagihan.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Tagihan } from './tagihan.model';
 import response from 'src/library/response';
@@ -68,30 +69,43 @@ export class TagihanService {
     }
   }
 
-  async approval(approvalTagihanDto: ApprovalTagihanDto) {
+  async checkout(checkoutTagihanDto: CheckoutTagihanDto, id: number) {
     const data = {
-      id: approvalTagihanDto.tagihan_id,
-      status: approvalTagihanDto.status
+      session_id: checkoutTagihanDto.session_id,
+      url: checkoutTagihanDto.url
     }
-    //check tagihan
-    const check = await this.tagihanModel.findAll({ where: { id: approvalTagihanDto.tagihan_id } })
-    //return respon kadarluarsa (tagihan tidak dieksekusi)
-    if (check[0].status == 0 || check[0].status == 2) {
-      return { status: 1, message: "Status gagal di update" }
-    }
-
-    //update tagihan
-    const response = await this.tagihanModel.update(data, { where: { id: approvalTagihanDto.tagihan_id } });
-    if (response[0] == 1) {
-      if (approvalTagihanDto.status == 2) {
-        return { status: 2, message: "Pembayaran sukses!" }
-      } else {
-        return { status: 0, message: "Pembayaran ditolak!" }
-      }
-    } else {
-      return { status: 1, message: "Status gagal di update" }
+    try {
+      await this.tagihanModel.update(data, { where: { id: id } });
+      return data
+    } catch (error) {
+      throw new Error(error);
     }
   }
+
+  // async approval(approvalTagihanDto: ApprovalTagihanDto) {
+  //   const data = {
+  //     id: approvalTagihanDto.tagihan_id,
+  //     status: approvalTagihanDto.status
+  //   }
+  //   //check tagihan
+  //   const check = await this.tagihanModel.findAll({ where: { id: approvalTagihanDto.tagihan_id } })
+  //   //return respon kadarluarsa (tagihan tidak dieksekusi)
+  //   if (check[0].status == 0 || check[0].status == 2) {
+  //     return { status: 1, message: "Status gagal di update" }
+  //   }
+
+  //   //update tagihan
+  //   const response = await this.tagihanModel.update(data, { where: { id: approvalTagihanDto.tagihan_id } });
+  //   if (response[0] == 1) {
+  //     if (approvalTagihanDto.status == 2) {
+  //       return { status: 2, message: "Pembayaran sukses!" }
+  //     } else {
+  //       return { status: 0, message: "Pembayaran ditolak!" }
+  //     }
+  //   } else {
+  //     return { status: 1, message: "Status gagal di update" }
+  //   }
+  // }
 
 
 

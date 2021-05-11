@@ -21,14 +21,32 @@ export class Tagihan extends Model {
     ({ type: DataType.BIGINT })
   id: number;
 
+  @Column
+  session_id: string;
+
   // @ApiProperty()
+  @Column
+  // ({ type: DataType.BIGINT })
+  url: string;
+
+  @Column
+  trx_id: number;
+
+  // @ApiProperty()
+  @Column
+  via: number;
+
   @Column
   // ({ type: DataType.BIGINT })
   channel: string;
 
   // @ApiProperty()
   @Column
-  transaction_id: number;
+  va: number;
+
+  // @ApiProperty()
+  @Column
+  uniqamount: number;
 
   // @ApiProperty()
   @Column
