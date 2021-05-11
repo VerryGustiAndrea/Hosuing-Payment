@@ -23,7 +23,15 @@ export class Tagihan extends Model {
 
   // @ApiProperty()
   @Column
-    ({ type: DataType.STRING })
+  // ({ type: DataType.BIGINT })
+  channel: string;
+
+  // @ApiProperty()
+  @Column
+  transaction_id: number;
+
+  // @ApiProperty()
+  @Column
   user_id: number;
 
   // @ApiProperty()

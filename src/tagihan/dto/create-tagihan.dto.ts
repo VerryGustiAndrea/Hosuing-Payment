@@ -20,6 +20,15 @@ import { Type } from 'class-transformer';
 
 export class CreateTagihanDto {
 
+    @IsOptional()
+    channel: string;
+
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    transaction_id: number;
+
+
     @IsNotEmpty()
     @Type(() => Number)
     @IsNumber()
