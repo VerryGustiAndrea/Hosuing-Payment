@@ -77,7 +77,7 @@ export class TagihanService {
         price: createTagihanDto.grand_total,
         quantity: 1,
         comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()} Tahun ` + `${new Date(createTagihanDto.date).getFullYear()}`,
-        ureturn: `http://${process.env.APP_HOST}:3000/tagihan/checkout/` + responseCreateTagihan.id,
+        ureturn: `http://${process.env.APP_HOST}:3000/tagihan/return/` + responseCreateTagihan.id,
         unotify: `http://${process.env.APP_HOST}:3000/tagihan/approval/` + responseCreateTagihan.user_id,
         ucancel: "",
         format: "json",
@@ -108,7 +108,7 @@ export class TagihanService {
     }
   }
 
-  async checkout(trx_id: number, via: string, channel: string, va: number, uniqamount: number, id: number) {
+  async return(trx_id: number, via: string, channel: string, va: number, uniqamount: number, id: number) {
     let data = {
       trx_id: trx_id,
       via: via,

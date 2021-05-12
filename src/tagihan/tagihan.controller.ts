@@ -60,10 +60,10 @@ export class TagihanController {
     }
   }
 
-  @Get('checkout/:id')
-  async checkout(@Query('trx_id') trx_id: number, @Query('via') via: string, @Query('channel') channel: string, @Query('va') va: number, @Query('uniqamount') uniqamount: number, @Param('id') id: number) {
+  @Get('return/:id')
+  async return(@Query('trx_id') trx_id: number, @Query('via') via: string, @Query('channel') channel: string, @Query('va') va: number, @Query('uniqamount') uniqamount: number, @Param('id') id: number) {
     try {
-      const response = await this.tagihanService.checkout(trx_id, via, channel, va, uniqamount, id);
+      const response = await this.tagihanService.return(trx_id, via, channel, va, uniqamount, id);
       return Response(response, 'Success Input Tagihan', true);
     } catch (error) {
       return ErrorResponse(error, 500, null)
