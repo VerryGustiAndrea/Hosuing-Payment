@@ -69,6 +69,16 @@ export class TagihanController {
     }
   }
 
+  @Post('approval')
+  async approval(@Query('trx_id') trx_id: number, @Query('sid') sid: number, @Query('status') status: string, @Query('via') via: string) {
+    try {
+      const response = await this.tagihanService.approval(trx_id, sid, status, via);
+      return Response(response, 'Success Input Tagihan', true);
+    } catch (error) {
+      return ErrorResponse(error, 500, null)
+    }
+  }
+
   // @Post('approval')
   // async approval(@Body() approvalTagihanDto: ApprovalTagihanDto) {
 

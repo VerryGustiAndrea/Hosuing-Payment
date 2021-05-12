@@ -77,8 +77,8 @@ export class TagihanService {
         price: createTagihanDto.grand_total,
         quantity: 1,
         comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()}` + `${new Date(createTagihanDto.date).getFullYear()}`,
-        ureturn: "http://localhost:3000/tagihan/checkout/" + responseCreateTagihan.id,
-        unotify: "http://websiteanda.com/notify.php" + responseCreateTagihan.id,
+        ureturn: `http://${process.env.APP_HOST}:3000/tagihan/checkout/` + responseCreateTagihan.id,
+        unotify: `http://${process.env.APP_HOST}:3000/tagihan/approval/`,
         ucancel: "",
         format: "json",
         //weight:0.5
@@ -124,6 +124,23 @@ export class TagihanService {
     }
     try {
       await this.tagihanModel.update(data, { where: { id: id } });
+      return data
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async approval(trx_id: number, sid: number, status: string, via: string) {
+    let data = {
+      status: 1
+    }
+    if (status = "berhasil") {
+      data.status = 2
+    } else {
+      data.status = 0
+    }
+    try {
+      await this.tagihanModel.update(data, { where: { session_id: sid } });
       return data
     } catch (error) {
       throw new Error(error);
