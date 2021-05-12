@@ -65,7 +65,7 @@ export class TagihanService {
         denda: createTagihanDto.denda,
         grand_total: createTagihanDto.grand_total,
         date: createTagihanDto.date,
-        status: 0,
+        status: 1,
       })
       const responseCreateTagihan = await createdTagihan.save()
 
@@ -76,9 +76,9 @@ export class TagihanService {
         product: "Tagihan bulan " + new Date(createTagihanDto.date).toDateString(),
         price: createTagihanDto.grand_total,
         quantity: 1,
-        comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()}` + `${new Date(createTagihanDto.date).getFullYear()}`,
+        comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()} Tahun ` + `${new Date(createTagihanDto.date).getFullYear()}`,
         ureturn: `http://${process.env.APP_HOST}:3000/tagihan/checkout/` + responseCreateTagihan.id,
-        unotify: `http://${process.env.APP_HOST}:3000/tagihan/approval/`,
+        unotify: `http://${process.env.APP_HOST}:3000/tagihan/approval/` + responseCreateTagihan.user_id,
         ucancel: "",
         format: "json",
         //weight:0.5
@@ -146,6 +146,11 @@ export class TagihanService {
       throw new Error(error);
     }
   }
+
+  async checkApproval(sid: number) {
+    return await this.tagihanModel.findOne({ where: { session_id: sid } });
+  }
+
 
   // async approval(approvalTagihanDto: ApprovalTagihanDto) {
   //   const data = {

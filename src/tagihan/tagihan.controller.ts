@@ -12,6 +12,7 @@ import {
   FileFieldsInterceptor,
   FileInterceptor,
 } from '@nestjs/platform-express';
+import response from 'src/library/response';
 
 
 
@@ -69,11 +70,28 @@ export class TagihanController {
     }
   }
 
-  @Post('approval')
-  async approval(@Query('trx_id') trx_id: number, @Query('sid') sid: number, @Query('status') status: string, @Query('via') via: string) {
+  @Post('approval/:id')
+  async approval(@Query('trx_id') trx_id: number, @Query('sid') sid: number, @Query('status') status: string, @Query('via') via: string, @Param('id') id: number) {
     try {
       const response = await this.tagihanService.approval(trx_id, sid, status, via);
-      return Response(response, 'Success Input Tagihan', true);
+
+      const responseCheck = await this.tagihanService.checkApproval(sid);
+
+      //add inbox
+      const dataInbox = {
+        user_id: id,
+        title: "Informasi pembayaran Tagihan bulan " + `${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()}`,
+        message: "",
+        date: responseCheck.date
+      }
+
+      if (status == "berhasil") {
+        dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
+      } else {
+        dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} ditolak, mohon konfirmasi kembali kepada admin. Terimakasih.`
+      }
+      await this.inboxService.inputinbox(dataInbox);
+      return Response(dataInbox, 'Success Input Tagihan', true);
     } catch (error) {
       return ErrorResponse(error, 500, null)
     }

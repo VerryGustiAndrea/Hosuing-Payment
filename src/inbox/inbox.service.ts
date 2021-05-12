@@ -40,11 +40,12 @@ export class InboxService {
   }
 
   async inputinbox(createInboxDto: CreateInboxDto) {
+    console.log(createInboxDto)
     const createdInbox = new this.inboxModel({
       user_id: createInboxDto.user_id,
       title: createInboxDto.title,
       message: createInboxDto.message,
-      date: new Date()
+      date: createInboxDto.date
     })
     try {
       await createdInbox.save()

@@ -32,7 +32,7 @@ export class CreateInboxDto {
     message: string;
 
     @IsNotEmpty()
-    date: string;
+    date: Date;
 
 }
 
