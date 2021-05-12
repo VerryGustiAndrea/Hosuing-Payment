@@ -131,7 +131,7 @@ export class TagihanService {
     }
   }
 
-  async approval(trx_id: number, sid: number, status: string, via: string) {
+  async approval(trx_id: number, sid: number, status: string, via: string, id: number) {
     let data = {
       status: 1
     }

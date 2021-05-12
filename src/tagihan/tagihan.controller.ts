@@ -73,13 +73,13 @@ export class TagihanController {
   @Post('approval/:id')
   async approval(@Query('trx_id') trx_id: number, @Query('sid') sid: number, @Query('status') status: string, @Query('via') via: string, @Param('id') id: number) {
     try {
-      const response = await this.tagihanService.approval(trx_id, sid, status, via);
+      const response = await this.tagihanService.approval(trx_id, sid, status, via, id);
 
       const responseCheck = await this.tagihanService.checkApproval(sid);
 
       //add inbox
       const dataInbox = {
-        user_id: id,
+        user_id: Number(id),
         title: "Informasi pembayaran Tagihan bulan " + `${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()}`,
         message: "",
         date: responseCheck.date
@@ -91,8 +91,9 @@ export class TagihanController {
         dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} ditolak, mohon konfirmasi kembali kepada admin. Terimakasih.`
       }
       await this.inboxService.inputinbox(dataInbox);
-      return Response(dataInbox, 'Success Input Tagihan', true);
+      return Response(dataInbox, 'Success Input Inbox', true);
     } catch (error) {
+      console.log(error)
       return ErrorResponse(error, 500, null)
     }
   }
