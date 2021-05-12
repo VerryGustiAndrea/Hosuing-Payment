@@ -21,13 +21,31 @@ import { Type } from 'class-transformer';
 export class CreateTagihanDto {
 
     @IsOptional()
+    session_id: string;
+
+    @IsOptional()
+    url: string;
+
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    trx_id: number;
+
+    @IsOptional()
+    via: string;
+
+    @IsOptional()
     channel: string;
 
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
-    transaction_id: number;
+    va: number;
 
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    uniqamount: number;
 
     @IsNotEmpty()
     @Type(() => Number)

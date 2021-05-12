@@ -51,7 +51,6 @@ export class TagihanController {
 
   @Post('inputtagihan')
   async inputtagihan(@Body() createTagihanDto: CreateTagihanDto) {
-    console.log(createTagihanDto)
     try {
       const response = await this.tagihanService.inputtagihan(createTagihanDto);
       return Response(response, 'Success Input Tagihan', true);
@@ -60,11 +59,10 @@ export class TagihanController {
     }
   }
 
-  @Post('checkout/:id')
-  async checkout(@Body() checkoutTagihanDto: CheckoutTagihanDto, @Param('id') id: number) {
-    console.log(checkoutTagihanDto)
+  @Get('checkout/:id')
+  async checkout(@Query('trx_id') trx_id: number, @Query('via') via: string, @Query('channel') channel: string, @Query('va') va: number, @Query('uniqamount') uniqamount: number, @Param('id') id: number) {
     try {
-      const response = await this.tagihanService.checkout(checkoutTagihanDto, id);
+      const response = await this.tagihanService.checkout(trx_id, via, channel, va, uniqamount, id);
       return Response(response, 'Success Input Tagihan', true);
     } catch (error) {
       return ErrorResponse(error, 500, null)

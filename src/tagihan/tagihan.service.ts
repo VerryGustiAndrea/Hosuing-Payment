@@ -7,15 +7,19 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Tagihan } from './tagihan.model';
 import response from 'src/library/response';
 const { Op } = require("sequelize");
+const axios = require('axios')
+
 // import fs from 'fs';
 var fs = require('fs');
+import { map } from 'rxjs/operators';
+import { stringify } from 'node:querystring';
 
 
 @Injectable()
 export class TagihanService {
   constructor(
     @InjectModel(Tagihan)
-    private tagihanModel: typeof Tagihan,
+    private tagihanModel: typeof Tagihan
   ) { }
 
   //ADMIN
@@ -46,33 +50,77 @@ export class TagihanService {
   }
 
   async inputtagihan(createTagihanDto: CreateTagihanDto) {
-    const createdTagihan = new this.tagihanModel({
-      user_id: createTagihanDto.user_id,
-      stan_meter_awal: createTagihanDto.stan_meter_awal,
-      stan_meter_akhir: createTagihanDto.stan_meter_akhir,
-      penggunaan: createTagihanDto.penggunaan,
-      tagihan_air: createTagihanDto.tagihan_air,
-      sampah: createTagihanDto.sampah,
-      keamanan: createTagihanDto.keamanan,
-      admin: createTagihanDto.admin,
-      sub_total_tagihan: createTagihanDto.sub_total_tagihan,
-      denda: createTagihanDto.denda,
-      grand_total: createTagihanDto.grand_total,
-      date: new Date(),
-      status: 0,
-    })
     try {
-      await createdTagihan.save()
+      //create tagihan
+      const createdTagihan = new this.tagihanModel({
+        user_id: createTagihanDto.user_id,
+        stan_meter_awal: createTagihanDto.stan_meter_awal,
+        stan_meter_akhir: createTagihanDto.stan_meter_akhir,
+        penggunaan: createTagihanDto.penggunaan,
+        tagihan_air: createTagihanDto.tagihan_air,
+        sampah: createTagihanDto.sampah,
+        keamanan: createTagihanDto.keamanan,
+        admin: createTagihanDto.admin,
+        sub_total_tagihan: createTagihanDto.sub_total_tagihan,
+        denda: createTagihanDto.denda,
+        grand_total: createTagihanDto.grand_total,
+        date: createTagihanDto.date,
+        status: 0,
+      })
+      const responseCreateTagihan = await createdTagihan.save()
+
+      //request payment to ipaymu
+      const dataIpaymu = {
+        key: "86ED9DE0-1179-4805-B019-07D147C53716",
+        action: "payment",
+        product: "Tagihan bulan " + new Date(createTagihanDto.date).toDateString(),
+        price: createTagihanDto.grand_total,
+        quantity: 1,
+        comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()}` + `${new Date(createTagihanDto.date).getFullYear()}`,
+        ureturn: "http://localhost:3000/tagihan/checkout/" + responseCreateTagihan.id,
+        unotify: "http://websiteanda.com/notify.php" + responseCreateTagihan.id,
+        ucancel: "",
+        format: "json",
+        //weight:0.5
+        //dimensi:1:2:1
+        //postal_code:80361
+        //address:Jalan raya Kuta, No. 88 R, Badung, Bali
+        //auto_redirect:10
+        // expired: 24,
+        //pay_method:
+        //pay_channel:
+        buyer_name: "Alex",
+        buyer_phone: "08123456789asd",
+        buyer_email: "buyer@mail.com",
+        reference_id: new Date().valueOf()
+      }
+      const response = await axios.post('https://sandbox.ipaymu.com/payment', dataIpaymu)
+
+      //update data
+      const dataUpdate = {
+        session_id: response.data.sessionID,
+        url: response.data.url
+      }
+      await this.tagihanModel.update(dataUpdate, { where: { id: responseCreateTagihan.id } });
       return createdTagihan
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async checkout(checkoutTagihanDto: CheckoutTagihanDto, id: number) {
-    const data = {
-      session_id: checkoutTagihanDto.session_id,
-      url: checkoutTagihanDto.url
+  async checkout(trx_id: number, via: string, channel: string, va: number, uniqamount: number, id: number) {
+    let data = {
+      trx_id: trx_id,
+      via: via,
+      channel: channel,
+      va: va,
+      uniqamount: uniqamount
+    }
+
+    if (via == "va") {
+      delete data["uniqamount"]
+    } else {
+      delete data["va"]
     }
     try {
       await this.tagihanModel.update(data, { where: { id: id } });
