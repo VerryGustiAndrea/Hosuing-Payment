@@ -65,7 +65,7 @@ export class TagihanService {
         denda: createTagihanDto.denda,
         grand_total: createTagihanDto.grand_total,
         date: createTagihanDto.date,
-        status: 1,
+        status: 0,
       })
       const responseCreateTagihan = await createdTagihan.save()
 
@@ -114,7 +114,8 @@ export class TagihanService {
       via: via,
       channel: channel,
       va: va,
-      uniqamount: uniqamount
+      uniqamount: uniqamount,
+      status: 1
     }
 
     if (via == "va") {
