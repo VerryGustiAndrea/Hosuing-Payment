@@ -20,20 +20,22 @@ import { Type } from 'class-transformer';
 
 export class ApprovalTagihanDto {
 
-    @IsNotEmpty()
+    // @IsNotEmpty()
     @Type(() => Number)
     @IsNumber()
-    tagihan_id: number;
+    trx_id: number;
 
-    @IsNotEmpty()
+    // @IsNotEmpty()
+    @Type(() => Number)
+    @IsNumber()
+    sid: number;
+
+    // @IsNotEmpty()
     @Type(() => Number)
     @IsNumber()
     status: number;
 
-    @IsNotEmpty()
-    @Type(() => Number)
-    @IsNumber()
-    user_id: number;
+    via: string;
 
 }
 
