@@ -76,7 +76,6 @@ export class TagihanController {
       console.log("body", approvalTagihanDto)
       console.log(" controller approve", approvalTagihanDto.trx_id, approvalTagihanDto.sid, approvalTagihanDto.status, approvalTagihanDto.via, id)
       const response = await this.tagihanService.approval(approvalTagihanDto.trx_id, approvalTagihanDto.sid, approvalTagihanDto.status, approvalTagihanDto.via, id);
-
       const responseCheck = await this.tagihanService.checkApproval(approvalTagihanDto.sid);
 
       //add inbox
@@ -90,12 +89,17 @@ export class TagihanController {
       if (approvalTagihanDto.status == "berhasil") {
         console.log("berhasil")
         dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
+        await this.inboxService.inputinbox(dataInbox);
+        return Response(dataInbox, 'Success Input Inbox', true);
       } else if (approvalTagihanDto.status == "gagal") {
         console.log("gagal")
         dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} ditolak, mohon konfirmasi kembali kepada admin. Terimakasih.`
+        await this.inboxService.inputinbox(dataInbox);
+        return Response(dataInbox, 'Success Input Inbox', true);
+      } else if (approvalTagihanDto.status == "pending") {
+        return Response(approvalTagihanDto, 'Transaction pending', true);
       }
-      await this.inboxService.inputinbox(dataInbox);
-      return Response(dataInbox, 'Success Input Inbox', true);
+
     } catch (error) {
       console.log(error)
       return ErrorResponse(error, 500, null)
