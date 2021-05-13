@@ -87,10 +87,10 @@ export class TagihanController {
         date: responseCheck.date
       }
 
-      if (status == "berhasil") {
+      if (approvalTagihanDto.status == "berhasil") {
         console.log("berhasil")
         dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
-      } else {
+      } else if (approvalTagihanDto.status == "gagal") {
         console.log("gagal")
         dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} ditolak, mohon konfirmasi kembali kepada admin. Terimakasih.`
       }
