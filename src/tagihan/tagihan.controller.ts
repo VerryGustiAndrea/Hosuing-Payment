@@ -86,8 +86,10 @@ export class TagihanController {
       }
 
       if (status == "berhasil") {
+        console.log("berhasil")
         dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
       } else {
+        console.log("gagal")
         dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} ditolak, mohon konfirmasi kembali kepada admin. Terimakasih.`
       }
       await this.inboxService.inputinbox(dataInbox);

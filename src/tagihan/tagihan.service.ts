@@ -135,7 +135,7 @@ export class TagihanService {
     let data = {
       status: 1
     }
-    if (status = "berhasil") {
+    if (status == "berhasil") {
       data.status = 2
     } else {
       data.status = 0
