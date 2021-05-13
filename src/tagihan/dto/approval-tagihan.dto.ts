@@ -30,5 +30,11 @@ export class ApprovalTagihanDto {
 
     via: string;
 
+    channel: string;
+
+    va: number;
+
+    uniqamount: number;
+
 }
 
