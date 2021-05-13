@@ -97,6 +97,7 @@ export class TagihanController {
         await this.inboxService.inputinbox(dataInbox);
         return Response(dataInbox, 'Success Input Inbox', true);
       } else if (approvalTagihanDto.status == "pending") {
+        await this.tagihanService.return(approvalTagihanDto.trx_id, approvalTagihanDto.via, approvalTagihanDto.channel, approvalTagihanDto.va, approvalTagihanDto.uniqamount, id);
         return Response(approvalTagihanDto, 'Transaction pending', true);
       }
 
