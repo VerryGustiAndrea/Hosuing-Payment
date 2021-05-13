@@ -71,14 +71,13 @@ export class TagihanController {
   }
 
   @Post('approval/:id')
-  async approval(@Body() approvalTagihanDto: ApprovalTagihanDto, @Query() query: Record<string, any>, @Query('trx_id') trx_id: number, @Query('sid') sid: string, @Query('status') status: string, @Query('via') via: string, @Param('id') id: number) {
+  async approval(@Body() approvalTagihanDto: ApprovalTagihanDto, @Param('id') id: number) {
     try {
       console.log("body", approvalTagihanDto)
-      console.log("query", query)
-      console.log(" controller approve", trx_id, sid, status, via, id)
-      const response = await this.tagihanService.approval(trx_id, sid, status, via, id);
+      console.log(" controller approve", approvalTagihanDto.trx_id, approvalTagihanDto.sid, approvalTagihanDto.status, approvalTagihanDto.via, id)
+      const response = await this.tagihanService.approval(approvalTagihanDto.trx_id, approvalTagihanDto.sid, approvalTagihanDto.status, approvalTagihanDto.via, id);
 
-      const responseCheck = await this.tagihanService.checkApproval(sid);
+      const responseCheck = await this.tagihanService.checkApproval(approvalTagihanDto.sid);
 
       //add inbox
       const dataInbox = {
