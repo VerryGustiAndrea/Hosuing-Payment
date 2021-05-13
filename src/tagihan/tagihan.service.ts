@@ -132,7 +132,7 @@ export class TagihanService {
     }
   }
 
-  async approval(trx_id: number, sid: number, status: string, via: string, id: number) {
+  async approval(trx_id: number, sid: string, status: string, via: string, id: number) {
     let data = {
       status: 1
     }
@@ -149,7 +149,7 @@ export class TagihanService {
     }
   }
 
-  async checkApproval(sid: number) {
+  async checkApproval(sid: string) {
     return await this.tagihanModel.findOne({ where: { session_id: sid } });
   }
 
