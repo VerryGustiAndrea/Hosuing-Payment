@@ -26,14 +26,14 @@ export class ApprovalTagihanDto {
     trx_id: number;
 
     // @IsNotEmpty()
-    @Type(() => Number)
-    @IsNumber()
-    sid: number;
+    // @Type(() => Number)
+    // @IsNumber()
+    sid: string;
 
     // @IsNotEmpty()
-    @Type(() => Number)
-    @IsNumber()
-    status: number;
+    // @Type(() => Number)
+    // @IsNumber()
+    status: string;
 
     via: string;
 
