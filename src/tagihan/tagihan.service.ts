@@ -94,6 +94,7 @@ export class TagihanService {
         buyer_email: "buyer@mail.com",
         reference_id: new Date().valueOf()
       }
+      console.log(dataIpaymu)
       const response = await axios.post('https://sandbox.ipaymu.com/payment', dataIpaymu)
 
       //update data
