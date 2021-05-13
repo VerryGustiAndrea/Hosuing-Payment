@@ -71,8 +71,9 @@ export class TagihanController {
   }
 
   @Post('approval/:id')
-  async approval(@Query('trx_id') trx_id: number, @Query('sid') sid: string, @Query('status') status: string, @Query('via') via: string, @Param('id') id: number) {
+  async approval(@Query() query: Record<string, any>, @Query('trx_id') trx_id: number, @Query('sid') sid: string, @Query('status') status: string, @Query('via') via: string, @Param('id') id: number) {
     try {
+      console.log("query", query)
       console.log(" controller approve", trx_id, sid, status, via, id)
       const response = await this.tagihanService.approval(trx_id, sid, status, via, id);
 
