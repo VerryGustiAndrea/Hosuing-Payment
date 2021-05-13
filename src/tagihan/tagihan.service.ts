@@ -133,6 +133,8 @@ export class TagihanService {
   }
 
   async approval(trx_id: number, sid: string, status: string, via: string, id: number) {
+    console.log(" service approve", trx_id, sid, status, via, id)
+
     let data = {
       status: 1
     }
@@ -141,6 +143,7 @@ export class TagihanService {
     } else {
       data.status = 0
     }
+    console.log("data approval", data)
     try {
       await this.tagihanModel.update(data, { where: { session_id: sid } });
       return data
