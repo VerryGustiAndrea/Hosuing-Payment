@@ -152,6 +152,29 @@ export class TagihanService {
     }
   }
 
+  async pending(trx_id: number, via: string, channel: string, va: number, uniqamount: number, sid: string) {
+    let data = {
+      trx_id: trx_id,
+      via: via,
+      channel: channel,
+      va: va,
+      uniqamount: uniqamount,
+      status: 1
+    }
+
+    if (via == "va") {
+      delete data["uniqamount"]
+    } else {
+      delete data["va"]
+    }
+    try {
+      await this.tagihanModel.update(data, { where: { session_id: sid } });
+      return data
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async checkApproval(sid: string) {
     return await this.tagihanModel.findOne({ where: { session_id: sid } });
   }
