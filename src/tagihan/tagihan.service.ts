@@ -77,9 +77,10 @@ export class TagihanService {
         price: createTagihanDto.grand_total,
         quantity: 1,
         comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()} Tahun ` + `${new Date(createTagihanDto.date).getFullYear()}`,
-        ureturn: `http://${process.env.APP_HOST}:3000/tagihan/return/` + responseCreateTagihan.id,
+        // ureturn: `http://${process.env.APP_HOST}:3000/tagihan/return/` + responseCreateTagihan.id,
+        ureturn: "payment_return",
         unotify: `http://${process.env.APP_HOST}:3000/tagihan/approval/` + responseCreateTagihan.user_id,
-        ucancel: "",
+        ucancel: "payment_cancel",
         format: "json",
         //weight:0.5
         //dimensi:1:2:1
