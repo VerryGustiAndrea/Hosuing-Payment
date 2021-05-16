@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const service = require("../../config/gmail");
+// const service = require("../../config/gmail");
 const template = require("./template/templatePointInfo");
 
 module.exports = {
@@ -15,11 +15,11 @@ module.exports = {
   ) => {
     //Send Email Welcome
     let transporter = nodemailer.createTransport({
-      //gmail
+      //gmail using node env
       service: "gmail",
       auth: {
-        user: service.email,
-        pass: service.password,
+        user: "akunverrydummy@gmail.com",
+        pass: "nakushita1",
       },
 
       // host: "mail.redrubygroup.com",
@@ -33,7 +33,7 @@ module.exports = {
     let mailOptions = {
       from: service.email,
       to: email,
-      subject: "RedRuby Point Info",
+      subject: "Housing Payment Info",
       html: template.point(
         name,
         payment_date,

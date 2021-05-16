@@ -90,6 +90,9 @@ export class TagihanController {
         console.log("berhasil")
         dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
         await this.inboxService.inputinbox(dataInbox);
+        //send email
+
+
         return Response(dataInbox, 'Success Input Inbox', true);
       } else if (approvalTagihanDto.status == "gagal") {
         console.log("gagal")
