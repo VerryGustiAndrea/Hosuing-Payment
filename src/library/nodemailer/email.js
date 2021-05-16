@@ -18,8 +18,8 @@ module.exports = {
       //gmail using node env
       service: "gmail",
       auth: {
-        user: "akunverrydummy@gmail.com",
-        pass: "nakushita1",
+        user: process.env.EMAIL,
+        pass: process.env.EMAILPW,
       },
 
       // host: "mail.redrubygroup.com",
