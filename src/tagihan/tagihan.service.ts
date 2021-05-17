@@ -19,10 +19,17 @@ import { stringify } from 'node:querystring';
 export class TagihanService {
   constructor(
     @InjectModel(Tagihan)
-    private tagihanModel: typeof Tagihan
+    private tagihanModel: typeof Tagihan,
   ) { }
 
   //ADMIN
+  // async sendEmail(email: string, name: string) {
+  //   await this.mailService.sendTagihanInfo(email, name);
+  // }
+
+
+
+
   GetListTagihan(date: string): Promise<Tagihan[]> {
     const date1 = new Date(date) //date
     const date2 = new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)) //date + 1 month

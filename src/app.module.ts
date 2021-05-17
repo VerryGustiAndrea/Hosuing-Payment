@@ -8,6 +8,7 @@ import { InboxModule } from './inbox/inbox.module';
 import { TagihanModule } from './tagihan/tagihan.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { join } from 'path';
       database: process.env.DATABASE_NAME,
       autoLoadModels: true,
       synchronize: true,
-    }), UserModule, InboxModule, TagihanModule
+    }), UserModule, InboxModule, TagihanModule, MailModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -14,14 +14,27 @@ import {
 } from '@nestjs/platform-express';
 import response from 'src/library/response';
 
+import { MailService } from './../mail/mail.service';
 
 
 @Controller('tagihan')
 export class TagihanController {
   constructor(private readonly tagihanService: TagihanService,
-    private inboxService: InboxService) { }
+    private inboxService: InboxService,
+    private mailService: MailService
+  ) { }
 
   //ADMIN
+  @Post('sendMail')
+  async sendMail(@Query('email') email: string, @Query('name') name: string) {
+    try {
+      const response = await this.mailService.sendTagihanInfo(email, name);
+      return Response(response, 'Success Send Mail', true);
+    } catch (error) {
+      return ErrorResponse(error, 500, null)
+    }
+  }
+
   @Get('getlisttagihan')
   async getlisttagihan(@Query('date') date: string) {
     const response = await this.tagihanService.GetListTagihan(date);
