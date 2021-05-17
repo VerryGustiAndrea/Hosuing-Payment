@@ -26,9 +26,9 @@ export class TagihanController {
 
   //ADMIN
   @Post('sendMail')
-  async sendMail(@Query('email') email: string, @Query('name') name: string) {
+  async sendMail(@Query('email') email: string, @Query('title') title: string, @Query('message') message: string, @Query('name') name: string) {
     try {
-      const response = await this.mailService.sendTagihanInfo(email, name);
+      const response = await this.mailService.sendTagihanInfo(email, title, message, name);
       return Response(response, 'Success Send Mail', true);
     } catch (error) {
       return ErrorResponse(error, 500, null)
