@@ -25,6 +25,16 @@ export class TagihanController {
   ) { }
 
   //ADMIN
+  @Get('alltagihan')
+  async allTagihan() {
+    try {
+      const response = await this.tagihanService.findAll();
+      return Response(response, 'Success Send Mail', true);
+    } catch (error) {
+      return ErrorResponse(error, 500, null)
+    }
+  }
+
   @Post('sendMail')
   async sendMail(@Query('email') email: string, @Query('title') title: string, @Query('message') message: string, @Query('name') name: string) {
     try {
@@ -38,6 +48,7 @@ export class TagihanController {
   @Get('getlisttagihan')
   async getlisttagihan(@Query('date') date: string) {
     const response = await this.tagihanService.GetListTagihan(date);
+    console.log(response)
     if (response.length) {
       if (response.length == 1) {
         return Response(response[0], 'Data ditemukan', true);
@@ -67,6 +78,7 @@ export class TagihanController {
   async inputtagihan(@Body() createTagihanDto: CreateTagihanDto) {
     try {
       const response = await this.tagihanService.inputtagihan(createTagihanDto);
+      console.log(response)
       return Response(response, 'Success Input Tagihan', true);
     } catch (error) {
       return ErrorResponse(error, 500, null)
@@ -91,6 +103,7 @@ export class TagihanController {
       const response = await this.tagihanService.approval(approvalTagihanDto.trx_id, approvalTagihanDto.sid, approvalTagihanDto.status, approvalTagihanDto.via, id);
       const responseCheck = await this.tagihanService.checkApproval(approvalTagihanDto.sid);
 
+      console.log(responseCheck)
       //add inbox
       const dataInbox = {
         user_id: Number(id),
@@ -104,6 +117,8 @@ export class TagihanController {
         dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
         await this.inboxService.inputinbox(dataInbox);
         //send email
+        // await this.mailService.sendTagihanInfo("verrygustiandrea@gmail.com", dataInbox.title, dataInbox.message, "verrygustiandrea");
+
 
 
         return Response(dataInbox, 'Success Input Inbox', true);
@@ -115,7 +130,6 @@ export class TagihanController {
       } else if (approvalTagihanDto.status == "pending") {
         console.log("pending")
         await this.tagihanService.pending(approvalTagihanDto.trx_id, approvalTagihanDto.via, approvalTagihanDto.channel, approvalTagihanDto.va, approvalTagihanDto.uniqamount, approvalTagihanDto.sid);
-        await this.mailService.sendTagihanInfo("verrygustiandrea@gmail.com", dataInbox.title, dataInbox.message, "verrygustiandrea");
         return Response(approvalTagihanDto, 'Transaction pending', true);
       }
 

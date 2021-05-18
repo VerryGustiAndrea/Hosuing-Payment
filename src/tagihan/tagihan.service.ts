@@ -13,6 +13,7 @@ const axios = require('axios')
 var fs = require('fs');
 import { map } from 'rxjs/operators';
 import { stringify } from 'node:querystring';
+import { User } from 'src/user/user.model';
 
 
 @Injectable()
@@ -20,6 +21,7 @@ export class TagihanService {
   constructor(
     @InjectModel(Tagihan)
     private tagihanModel: typeof Tagihan,
+    // private userModel: typeof User,
   ) { }
 
   //ADMIN
@@ -57,6 +59,7 @@ export class TagihanService {
   }
 
   async inputtagihan(createTagihanDto: CreateTagihanDto) {
+
     try {
       //create tagihan
       const createdTagihan = new this.tagihanModel({
@@ -81,7 +84,7 @@ export class TagihanService {
         key: "86ED9DE0-1179-4805-B019-07D147C53716",
         action: "payment",
         product: "Tagihan bulan " + new Date(createTagihanDto.date).toDateString(),
-        price: createTagihanDto.grand_total,
+        price: 123123,
         quantity: 1,
         comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()} Tahun ` + `${new Date(createTagihanDto.date).getFullYear()}`,
         // ureturn: `http://${process.env.APP_HOST}:3000/tagihan/return/` + responseCreateTagihan.id,
@@ -103,9 +106,14 @@ export class TagihanService {
         reference_id: new Date().valueOf()
       }
       console.log(dataIpaymu)
-      const response = await axios.post('https://sandbox.ipaymu.com/payment', dataIpaymu)
+      const response = await axios.post('https://sandbox.ipaymu.com/payment', dataIpaymu, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
       //update data
+      console.log("disini")
       const dataUpdate = {
         session_id: response.data.sessionID,
         url: response.data.url
@@ -113,6 +121,7 @@ export class TagihanService {
       await this.tagihanModel.update(dataUpdate, { where: { id: responseCreateTagihan.id } });
       return createdTagihan
     } catch (error) {
+      console.log(error)
       throw new Error(error);
     }
   }
@@ -291,6 +300,10 @@ export class TagihanService {
 
 
 
+  }
+
+  findAll() {
+    return this.tagihanModel.findAll({ include: [{ model: User, attributes: ['name', 'email'] }] })
   }
 
   findOne(id: number) {

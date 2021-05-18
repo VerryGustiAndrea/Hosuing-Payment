@@ -25,6 +25,10 @@ export class CreateUserDto {
     name: number;
 
     @IsNotEmpty()
+    // @IsAlphanumeric()
+    email: number;
+
+    @IsNotEmpty()
     // @MinLength(5)
     // @IsOptional()
     // @IsAlphanumeric()

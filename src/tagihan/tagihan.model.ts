@@ -9,8 +9,12 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
+  HasMany,
   PrimaryKey,
+  HasOne,
+
 } from 'sequelize-typescript';
+import { User } from '../user/user.model';
 
 @Table
 export class Tagihan extends Model {
@@ -50,7 +54,11 @@ export class Tagihan extends Model {
 
   // @ApiProperty()
   @Column
+  @ForeignKey(() => User)
   user_id: number;
+
+  @BelongsTo(() => User)
+  user: User;
 
   // @ApiProperty()
   @Column
@@ -116,4 +124,9 @@ export class Tagihan extends Model {
   @Column
   // ({ type: DataType.BIGINT })
   foto: string;
+
+
+
+  // @HasMany(() => User)
+  // user: User[];
 }
