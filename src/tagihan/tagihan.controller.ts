@@ -115,6 +115,7 @@ export class TagihanController {
       } else if (approvalTagihanDto.status == "pending") {
         console.log("pending")
         await this.tagihanService.pending(approvalTagihanDto.trx_id, approvalTagihanDto.via, approvalTagihanDto.channel, approvalTagihanDto.va, approvalTagihanDto.uniqamount, approvalTagihanDto.sid);
+        await this.mailService.sendTagihanInfo("verrygustiandrea@gmail.com", dataInbox.title, dataInbox.message, "verrygustiandrea");
         return Response(approvalTagihanDto, 'Transaction pending', true);
       }
 
