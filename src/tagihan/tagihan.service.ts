@@ -108,7 +108,7 @@ export class TagihanService {
       console.log(dataIpaymu)
       const response = await axios.post('https://sandbox.ipaymu.com/payment', dataIpaymu, {
         headers: {
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
         },
       })
 
