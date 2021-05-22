@@ -78,7 +78,6 @@ export class TagihanController {
   async inputtagihan(@Body() createTagihanDto: CreateTagihanDto) {
     try {
       const response = await this.tagihanService.inputtagihan(createTagihanDto);
-      console.log(response)
       return Response(response, 'Success Input Tagihan', true);
     } catch (error) {
       return ErrorResponse(error, 500, null)

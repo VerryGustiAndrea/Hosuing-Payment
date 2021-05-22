@@ -83,14 +83,14 @@ export class TagihanService {
       const dataIpaymu = {
         key: "86ED9DE0-1179-4805-B019-07D147C53716",
         action: "payment",
-        product: "Tagihan bulan " + new Date(createTagihanDto.date).toDateString(),
+        product: "Tagihan bulan " + `${new Date(createTagihanDto.date).toDateString()}`,
         price: 123123,
         quantity: 1,
         comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()} Tahun ` + `${new Date(createTagihanDto.date).getFullYear()}`,
         // ureturn: `http://${process.env.APP_HOST}:3000/tagihan/return/` + responseCreateTagihan.id,
-        ureturn: "payment_return",
+        ureturn: "http://payment_return",
         unotify: `http://${process.env.APP_HOST}:3000/tagihan/approval/` + responseCreateTagihan.user_id,
-        ucancel: "payment_cancel",
+        ucancel: "http://payment_cancel",
         format: "json",
         //weight:0.5
         //dimensi:1:2:1
@@ -105,11 +105,8 @@ export class TagihanService {
         buyer_email: "buyer@mail.com",
         reference_id: new Date().valueOf()
       }
-      console.log(dataIpaymu)
+
       const response = await axios.post('https://sandbox.ipaymu.com/payment', dataIpaymu, {
-        headers: {
-          // 'Content-Type': 'application/json',
-        },
       })
 
       //update data
