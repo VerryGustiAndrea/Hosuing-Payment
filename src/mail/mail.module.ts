@@ -19,6 +19,9 @@ import { join } from 'path';
 
         //service gmail
         service: "gmail",
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
           user: "akunverrydummy@gmail.com",
           pass: "nakushita1",
