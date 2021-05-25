@@ -48,7 +48,7 @@ export class TagihanController {
   @Get('getlisttagihan')
   async getlisttagihan(@Query('date') date: string) {
     const response = await this.tagihanService.GetListTagihan(date);
-    console.log(response)
+    // console.log(response)
     if (response.length) {
       if (response.length == 1) {
         return Response(response[0], 'Data ditemukan', true);
@@ -102,33 +102,32 @@ export class TagihanController {
       const response = await this.tagihanService.approval(approvalTagihanDto.trx_id, approvalTagihanDto.sid, approvalTagihanDto.status, approvalTagihanDto.via, id);
       const responseCheck = await this.tagihanService.checkApproval(approvalTagihanDto.sid);
 
-      console.log(responseCheck)
       //add inbox
       const dataInbox = {
         user_id: Number(id),
-        title: "Informasi pembayaran Tagihan bulan " + `${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()}`,
+        title: "Informasi pembayaran Tagihan bulan " + `${new Date(responseCheck.date).getMonth() + 1} Tahun ` + `${new Date(responseCheck.date).getFullYear()}`,
         message: "",
         date: responseCheck.date
       }
 
       if (approvalTagihanDto.status == "berhasil") {
         console.log("berhasil")
-        dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
+        dataInbox.message = `Pembayaran tagihan anda  bulan ${new Date(responseCheck.date).getMonth() + 1} Tahun ` + `${new Date(responseCheck.date).getFullYear()} berhasil di terima. Terimkasih atas pembayaran anda.`
         await this.inboxService.inputinbox(dataInbox);
         //send email
-        // await this.mailService.sendTagihanInfo("verrygustiandrea@gmail.com", dataInbox.title, dataInbox.message, "verrygustiandrea");
-
-
-
+        await this.mailService.sendTagihanInfo(responseCheck.user.email, dataInbox.title, dataInbox.message, responseCheck.user.name);
         return Response(dataInbox, 'Success Input Inbox', true);
       } else if (approvalTagihanDto.status == "gagal") {
         console.log("gagal")
-        dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth()} Tahun ` + `${new Date(responseCheck.date).getFullYear()} ditolak, mohon konfirmasi kembali kepada admin. Terimakasih.`
+        dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth() + 1} Tahun ` + `${new Date(responseCheck.date).getFullYear()} ditolak, mohon konfirmasi kembali kepada admin. Terimakasih.`
         await this.inboxService.inputinbox(dataInbox);
         return Response(dataInbox, 'Success Input Inbox', true);
       } else if (approvalTagihanDto.status == "pending") {
         console.log("pending")
         await this.tagihanService.pending(approvalTagihanDto.trx_id, approvalTagihanDto.via, approvalTagihanDto.channel, approvalTagihanDto.va, approvalTagihanDto.uniqamount, approvalTagihanDto.sid);
+        dataInbox.message = `Pembayaran tagihan anda bulan ${new Date(responseCheck.date).getMonth() + 1} Tahun ` + `${new Date(responseCheck.date).getFullYear()} sedang diproses, mohon menunggu info selanjutnya. Terimakasih.`
+        //send email
+        await this.mailService.sendTagihanInfo(responseCheck.user.email, dataInbox.title, dataInbox.message, responseCheck.user.name);
         return Response(approvalTagihanDto, 'Transaction pending', true);
       }
 

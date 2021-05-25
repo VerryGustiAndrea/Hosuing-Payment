@@ -86,7 +86,7 @@ export class TagihanService {
         product: "Tagihan bulan " + `${new Date(createTagihanDto.date).toDateString()}`,
         price: 123123,
         quantity: 1,
-        comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth()} Tahun ` + `${new Date(createTagihanDto.date).getFullYear()}`,
+        comments: "Tagihan bulan " + `${new Date(createTagihanDto.date).getMonth() + 1} Tahun ` + `${new Date(createTagihanDto.date).getFullYear()}`,
         // ureturn: `http://${process.env.APP_HOST}:3000/tagihan/return/` + responseCreateTagihan.id,
         ureturn: "http://payment_return",
         unotify: `http://${process.env.APP_HOST}:3000/tagihan/approval/` + responseCreateTagihan.user_id,
@@ -110,7 +110,6 @@ export class TagihanService {
       })
 
       //update data
-      console.log("disini")
       const dataUpdate = {
         session_id: response.data.sessionID,
         url: response.data.url
@@ -190,7 +189,7 @@ export class TagihanService {
   }
 
   async checkApproval(sid: string) {
-    return await this.tagihanModel.findOne({ where: { session_id: sid } });
+    return await this.tagihanModel.findOne({ include: [{ model: User, attributes: ['name', 'email'] }], where: { session_id: sid } });
   }
 
 
