@@ -109,7 +109,7 @@ export class TagihanService {
       const response = await axios.post('https://sandbox.ipaymu.com/payment', dataIpaymu, {
       })
 
-      //update data
+      //update database
       const dataUpdate = {
         session_id: response.data.sessionID,
         url: response.data.url
