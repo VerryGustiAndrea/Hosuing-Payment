@@ -193,33 +193,6 @@ export class TagihanService {
   }
 
 
-  // async approval(approvalTagihanDto: ApprovalTagihanDto) {
-  //   const data = {
-  //     id: approvalTagihanDto.tagihan_id,
-  //     status: approvalTagihanDto.status
-  //   }
-  //   //check tagihan
-  //   const check = await this.tagihanModel.findAll({ where: { id: approvalTagihanDto.tagihan_id } })
-  //   //return respon kadarluarsa (tagihan tidak dieksekusi)
-  //   if (check[0].status == 0 || check[0].status == 2) {
-  //     return { status: 1, message: "Status gagal di update" }
-  //   }
-
-  //   //update tagihan
-  //   const response = await this.tagihanModel.update(data, { where: { id: approvalTagihanDto.tagihan_id } });
-  //   if (response[0] == 1) {
-  //     if (approvalTagihanDto.status == 2) {
-  //       return { status: 2, message: "Pembayaran sukses!" }
-  //     } else {
-  //       return { status: 0, message: "Pembayaran ditolak!" }
-  //     }
-  //   } else {
-  //     return { status: 1, message: "Status gagal di update" }
-  //   }
-  // }
-
-
-
   //WARGA
   GetTagihanWarga(date: string, user_id: number): Promise<Tagihan[]> {
     const date1 = new Date(date) //date
