@@ -21,6 +21,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   // app.useStaticAssets(path.join(__dirname, '/../public'));
   // app.use(express.static(join(process.cwd(), '../client/dist/')));
+  app.enableCors();
   await app.listen(process.env.APP_PORT);
 }
 bootstrap();
