@@ -25,5 +25,6 @@ async function bootstrap() {
   // app.use(express.static(join(process.cwd(), '../client/dist/')));
   app.enableCors();
   await app.listen(process.env.APP_PORT);
+  console.log('App listen on port', process.env.APP_PORT)
 }
 bootstrap();
